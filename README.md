@@ -1,16 +1,19 @@
 # SpringBoot-example
 
 ## 개요
-**SpringBoot**를 사용하여 기초적인 시스템 개발 (회원가입, 로그인 등)
+**SpringBoot**를 사용하여 기초적인 시스템 개발 (CRUD)
 
 평소에 개발해보고 싶었던 기능 개발
 
 
 ## 환경
-* [Java]() 버전명
-  * [SpringBoot]() 버전명
-
-* [MySQL]() 버전명 
+* [Java](https://adoptium.net/temurin/releases) 21.0.8 (Eclipse Adoptium)
+  > 추후 25+ 업데이트 예정
+  * [Spring Boot](https://spring.io/projects/spring-boot) 3.4.4
+    >   4.0+ 업데이트 예정
+    
+* [MySQL](https://dev.mysql.com/downloads/mysql/) 8.0.28
+  > 8.0.36+로 업그레이드 예정.
 
 ## 설치 방법
 *Window 기준으로 설명합니다.*
