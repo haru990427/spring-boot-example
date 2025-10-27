@@ -12,8 +12,7 @@
   * [Spring Boot](https://spring.io/projects/spring-boot) 3.4.4
     >   4.0+ 업데이트 예정
     
-* [MySQL](https://dev.mysql.com/downloads/mysql/) 8.0.28
-  > 8.0.36+로 업그레이드 예정.
+* [MySQL](https://dev.mysql.com/downloads/mysql/) 8.4.7
 
 ## 설치 방법
 *Window 기준으로 설명합니다.*
