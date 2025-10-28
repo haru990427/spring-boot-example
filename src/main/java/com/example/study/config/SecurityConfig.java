@@ -19,20 +19,24 @@ public class SecurityConfig {
     private static final String[] PUBLIC_URI = {
             "/api/users/login",
             "/api/users/register",
-            "/api/test/**"
-//            "/api/admins/login",
-//            "/api/admins/register",
-//            "/api/organizations/login",
-//            "/api/organizations/register",
-//            "/api/users/create",
-//            "/api/users/check/nickname/**",
+            "/api/admins/login",
+            "/api/admins/register",
+            "/api/test/**",
+            "/api/users/**", // role 설정 작업 끝나면 삭제
 //            "/api/users/test/**",
 //            "/oauth/redirect/kakao",
-//            "api/test/**"
     };
 
-    private static final String[] TIMEPAY_URI = {
-            "/api/timepay/**"
+    private static final String[] USER_URI = {
+            "/api/users/**"
+    };
+
+    private static final String[] ADMIN_URI = {
+            "/api/admins/**"
+    };
+
+    private static final String[] SUPER_ADMIN_URI = {
+            "/api/admins/register",
     };
 
 
@@ -50,10 +54,9 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(PUBLIC_URI).permitAll()
                         .requestMatchers(HttpMethod.OPTIONS, "/api/**").permitAll()
-                        .requestMatchers("/api/admins/**").hasRole("ADMIN")
-                        .requestMatchers("/api/users/**").hasAnyRole("USER", "ORGANIZATION")
-                        .requestMatchers("/api/organizations/**").hasRole("ORGANIZATION")
-                        .requestMatchers(TIMEPAY_URI).hasAnyRole("USER", "ADMIN", "ORGANIZATION")
+                        .requestMatchers(USER_URI).hasAnyRole("USER", "ADMIN",  "SUPER_ADMIN")
+                        .requestMatchers(ADMIN_URI).hasAnyRole("ADMIN", "SUPER_ADMIN")
+                        .requestMatchers(SUPER_ADMIN_URI).hasAnyRole("SUPER_ADMIN")
                         .requestMatchers(HttpMethod.POST, "/api/notifications/**").authenticated()
                         .anyRequest().authenticated()
                 );
