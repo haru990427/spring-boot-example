@@ -7,6 +7,8 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
 
 import java.time.LocalDateTime;
 
@@ -39,7 +41,12 @@ public class User {
     @Enumerated(EnumType.STRING)
     private EmailStatus emailStatus = EmailStatus.UNVERIFIED;
 
+    @CreatedDate
+    @Column(updatable = false)
     private LocalDateTime createdAt;
+
+    @LastModifiedDate
+    private LocalDateTime updatedAt;
 
     public void changeRole(Role role) throws IllegalAccessException {
         if (this.role == role) {
