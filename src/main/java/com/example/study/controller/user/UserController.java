@@ -25,14 +25,15 @@ public class UserController {
 
         /* todo http response DTO 만들기  */
         /* todo 각 응답 코드 기준? 정하기 */
-        if (userRegisterResponse.isSuccess()) {
-            if (userRegisterResponse.getMessage() == "username") {
+        /* todo 브랜치 생성 및 관리 */
+        if (!userRegisterResponse.isSuccess()) {
+            if (userRegisterResponse.getMessage().equals("username")) {
                 return ResponseEntity.status(409).body("아이디 중복");
 
-            } else if (userRegisterResponse.getMessage() == "nickname") {
+            } else if (userRegisterResponse.getMessage().equals("nickname")) {
                 return ResponseEntity.status(409).body("닉네임 중복");
 
-            } else if(userRegisterResponse.getMessage() == "email") {
+            } else if(userRegisterResponse.getMessage().equals("email")) {
                 return ResponseEntity.status(409).body("이메일 중복");
             }
         }
