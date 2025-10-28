@@ -7,7 +7,7 @@
 
 
 ## 환경
-* [Java](https://adoptium.net/temurin/releases) 21.0.8 (Eclipse Adoptium)
+* [Java](https://adoptium.net/temurin/releases?version=21&os=any&arch=any) 21.0.8 (Eclipse Adoptium)
   > 추후 25+ 업데이트 예정
   * [Spring Boot](https://spring.io/projects/spring-boot) 3.4.4
     >   4.0+ 업데이트 예정
