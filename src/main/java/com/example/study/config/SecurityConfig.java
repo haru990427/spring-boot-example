@@ -23,6 +23,7 @@ public class SecurityConfig {
             "/api/admins/register",
             "/api/test/**",
             "/api/users/**", // role 설정 작업 끝나면 삭제
+            "/api/admins/**", // role 설정 작업 끝나면 삭제
 //            "/api/users/test/**",
 //            "/oauth/redirect/kakao",
     };
@@ -54,11 +55,12 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(PUBLIC_URI).permitAll()
                         .requestMatchers(HttpMethod.OPTIONS, "/api/**").permitAll()
-                        .requestMatchers(USER_URI).hasAnyRole("USER", "ADMIN",  "SUPER_ADMIN")
-                        .requestMatchers(ADMIN_URI).hasAnyRole("ADMIN", "SUPER_ADMIN")
-                        .requestMatchers(SUPER_ADMIN_URI).hasAnyRole("SUPER_ADMIN")
+//                        .requestMatchers(USER_URI).hasAnyRole("USER", "ADMIN",  "SUPER_ADMIN")
+//                        .requestMatchers(ADMIN_URI).hasAnyRole("ADMIN", "SUPER_ADMIN")
+//                        .requestMatchers(SUPER_ADMIN_URI).hasAnyRole("SUPER_ADMIN")
                         .requestMatchers(HttpMethod.POST, "/api/notifications/**").authenticated()
                         .anyRequest().authenticated()
+
                 );
 
         return http.build();
