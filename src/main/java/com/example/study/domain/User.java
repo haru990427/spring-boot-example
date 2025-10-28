@@ -17,7 +17,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @Data
 @Entity
-public class User {
+public class User extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -40,13 +40,6 @@ public class User {
     /* 이메일 인증 여부 */
     @Enumerated(EnumType.STRING)
     private EmailStatus emailStatus = EmailStatus.UNVERIFIED;
-
-    @CreatedDate
-    @Column(updatable = false)
-    private LocalDateTime createdAt;
-
-    @LastModifiedDate
-    private LocalDateTime updatedAt;
 
     public void changeRole(Role role) throws IllegalAccessException {
         if (this.role == role) {
