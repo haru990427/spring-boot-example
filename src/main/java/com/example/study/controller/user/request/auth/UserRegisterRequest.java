@@ -20,12 +20,15 @@ public class UserRegisterRequest {
 
     private String nickname;
 
+    private String email;
+
 
     public UserRegisterDTO toServiceDto() {
         return new UserRegisterDTO(
                 this.username,
                 this.password,
-                this.nickname
+                this.nickname,
+                this.email
         );
     }
 
