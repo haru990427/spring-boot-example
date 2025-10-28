@@ -1,6 +1,7 @@
 package com.example.study.controller.user;
 
 import com.example.study.controller.user.request.auth.UserRegisterRequest;
+import com.example.study.controller.user.response.auth.UserRegisterResponse;
 import com.example.study.domain.UserRepository;
 import com.example.study.service.user.UserService;
 import org.springframework.http.ResponseEntity;
@@ -19,8 +20,23 @@ public class UserController {
 
 
     @PostMapping("/register")
-    public ResponseEntity<String> registerUser(@RequestBody UserRegisterRequest request) {
-        userService.registerUser(request.toServiceDto());
-        return ResponseEntity.ok("OK?");
+    public ResponseEntity<?> registerUser(@RequestBody UserRegisterRequest request) {
+        UserRegisterResponse userRegisterResponse = userService.registerUser(request.toServiceDto());
+
+        /* todo http response DTO 만들기  */
+        /* todo 각 응답 코드 기준? 정하기 */
+        if (userRegisterResponse.isSuccess()) {
+            if (userRegisterResponse.getMessage() == "username") {
+                return ResponseEntity.status(409).body("아이디 중복");
+
+            } else if (userRegisterResponse.getMessage() == "nickname") {
+                return ResponseEntity.status(409).body("닉네임 중복");
+
+            } else if(userRegisterResponse.getMessage() == "email") {
+                return ResponseEntity.status(409).body("이메일 중복");
+            }
+        }
+
+        return ResponseEntity.ok(userRegisterResponse);
     }
 }
