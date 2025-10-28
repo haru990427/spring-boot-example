@@ -5,6 +5,8 @@ import org.springframework.beans.factory.annotation.Value;
 
 @Component
 public class JwtConfig {
+    /* todo JWT부터 개발 */
+
     @Value("${jwt.secret}")
     private String secretKey;
 

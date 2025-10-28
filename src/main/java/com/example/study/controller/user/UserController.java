@@ -5,6 +5,7 @@ import com.example.study.controller.user.response.ApiResponse;
 import com.example.study.controller.user.response.auth.UserRegisterResponse;
 import com.example.study.domain.UserRepository;
 import com.example.study.service.user.UserService;
+import io.swagger.annotations.Api;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -56,4 +57,32 @@ public class UserController {
                         .data(userRegisterResponse)
                         .build());
     }
+
+    @GetMapping("/{userId}")
+    public ResponseEntity<?> getUser(@PathVariable Long userId) {
+        /* todo get 기능 개발 */
+        /* 200, 404 */
+
+        return ResponseEntity.ok(
+                ApiResponse.builder()
+                        .status(HttpStatus.OK.value())
+                        .data(userId) // 여기에 유저 넣기
+                        .build());
+    }
+
+    @PutMapping("/{userId}")
+    public ResponseEntity<?> changeUserDetails(@PathVariable Long userId) {
+        /* todo put 기능 개발 */
+        /* 상황에 맞게 200(변경값 있음), 204(put을 요청했지만 변경값 없음), 404(없는 userId)  */
+
+        return ResponseEntity.ok("put");
+    }
+
+    @DeleteMapping("/{userId}")
+    public ResponseEntity<?> deleteUser(@PathVariable Long userId) {
+        /* todo delete 기능 개발 */
+        /* 204(삭제 성공), 404(없는 userId) */
+        return ResponseEntity.noContent().build();
+    }
+
 }
