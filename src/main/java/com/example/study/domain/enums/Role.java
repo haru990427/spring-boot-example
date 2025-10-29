@@ -12,4 +12,16 @@ public enum Role {
 
     private final String description;
 
+    public boolean canAccessUser() {
+        return this == USER || this == ADMIN || this == SUPER_ADMIN;
+    }
+
+    public boolean canAccessAdmin() {
+        return this ==  ADMIN || this == SUPER_ADMIN;
+    }
+
+    public boolean canAccessSuperAdmin() {
+        return this == SUPER_ADMIN;
+    }
+
 }
