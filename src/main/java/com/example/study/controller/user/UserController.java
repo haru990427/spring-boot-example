@@ -24,7 +24,7 @@ public class UserController {
 
     @PostMapping("/register")
     public ResponseEntity<?> registerUser(@RequestBody UserRegisterRequest request) {
-        UserRegisterResponse userRegisterResponse = userService.registerUser(request.toServiceDto());
+        UserRegisterResponse userRegisterResponse = userService.createUser(request.toServiceDto());
 
         /* todo 브랜치 생성 및 관리 */
         if (!userRegisterResponse.isSuccess()) {

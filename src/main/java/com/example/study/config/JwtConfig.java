@@ -1,13 +1,19 @@
 package com.example.study.config;
 
-import org.springframework.stereotype.Component;
+import lombok.Getter;
+import lombok.Setter;
+import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.beans.factory.annotation.Value;
 
-@Component
+@Configuration
+@ConfigurationProperties(prefix = "jwt")
+@Getter
+@Setter
 public class JwtConfig {
     /* todo JWT부터 개발 */
-
-    @Value("${jwt.secret}")
     private String secretKey;
+    private long expirationMs = 3_600_000L; // 60분
+    private long refreshExpirationMs = 604_800_000L; /// 7일
 
 }
