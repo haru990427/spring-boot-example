@@ -1,5 +1,7 @@
 package com.example.study.config;
 
+import com.example.study.filter.JwtAuthenticationFilter;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -40,6 +42,8 @@ public class SecurityConfig {
             "/api/admins/register",
     };
 
+    @Autowired
+    private JwtAuthenticationFilter jwtAuthenticationFilter;
 
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -60,8 +64,9 @@ public class SecurityConfig {
                         .requestMatchers(SUPER_ADMIN_URI).hasAnyRole("SUPER_ADMIN")
                         .requestMatchers(HttpMethod.POST, "/api/notifications/**").authenticated()
                         .anyRequest().authenticated()
+                )
+                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
 
-                );
 
         return http.build();
     }
