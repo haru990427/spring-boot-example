@@ -4,8 +4,7 @@ import com.example.study.controller.user.response.auth.UserInfoResponse;
 import com.example.study.controller.user.response.auth.UserLoginResponse;
 import com.example.study.domain.User;
 import com.example.study.domain.UserRepository;
-import com.example.study.domain.enums.Role;
-import com.example.study.service.user.dto.UserLoginDto;
+import com.example.study.service.user.dto.UserLoginDTO;
 import com.example.study.utils.JwtUtils;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -28,7 +27,7 @@ public class LoginService {
         this.jwtUtils = jwtUtils;
     }
 
-    public UserLoginResponse loginUser(UserLoginDto userData) {
+    public UserLoginResponse loginUser(UserLoginDTO userData) {
         User user = userRepository.findByUsername(userData.getUsername())
                 .filter(u -> passwordEncoder.matches(userData.getPassword(), u.getPassword()))
                 .orElseThrow(() -> new BadCredentialsException("로그인 정보가 올바르지 않습니다."));

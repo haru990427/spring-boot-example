@@ -1,6 +1,6 @@
 package com.example.study.controller.user.request.auth;
 
-import com.example.study.service.user.dto.UserLoginDto;
+import com.example.study.service.user.dto.UserLoginDTO;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -14,8 +14,8 @@ public class UserLoginRequest {
     private String username;
     private String password;
 
-    public UserLoginDto toServiceDto() {
-        return new UserLoginDto(
+    public UserLoginDTO toServiceDto() {
+        return new UserLoginDTO(
                 this.username,
                 this.password
         );
