@@ -42,11 +42,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
         String jwt = authHeader.substring(7);
         String username = jwtUtils.extractUsername(jwt);
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 
-         /* todo 아래 anonymousUser로 부여해버려서 null 인식이 안되는 문제 */
-        /* 우선 anonymousUser도 처리하게 했는데 원인 파악해서 고치는게 맞을듯 */
-        if (username != null && (auth == null || auth instanceof AnonymousAuthenticationToken)) {
+        if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
             UserDetails userDetails = userDetailsService.loadUserByUsername(username);
 
             if (jwtUtils.validateToken(jwt, username)) {
