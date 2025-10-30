@@ -11,7 +11,7 @@ import org.springframework.beans.factory.annotation.Value;
 @Getter
 @Setter
 public class JwtConfig {
-    /* todo JWT부터 개발 */
+
     private String secretKey;
     private long expirationMs = 3_600_000L; // 60분
     private long refreshExpirationMs = 604_800_000L; /// 7일
