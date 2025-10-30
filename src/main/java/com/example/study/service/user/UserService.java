@@ -123,4 +123,22 @@ public class UserService {
                     .build();
         }
     }
+
+    public UserInfoResponse getMyInfo(Long userId) {
+        User user =  this.userRepository.findById(userId).orElse(null);
+        return UserInfoResponse.builder()
+                .userID(user.getId())
+                .userName(user.getUsername())
+                .nickName(user.getNickname())
+                .role(user.getRole())
+                .email(user.getEmail())
+                .emailStatus(user.getEmailStatus())
+                .createdAt(user.getCreatedAt())
+                .updatedAt(user.getUpdatedAt())
+                .build();
+    }
+
+    public UserInfoResponse getUserInfo(Long userId) {
+        return null;
+    }
 }

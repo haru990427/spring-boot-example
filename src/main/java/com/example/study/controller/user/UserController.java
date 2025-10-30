@@ -2,21 +2,26 @@ package com.example.study.controller.user;
 
 import com.example.study.controller.user.request.auth.UserRegisterRequest;
 import com.example.study.controller.user.response.ApiResponse;
+import com.example.study.controller.user.response.auth.UserInfoResponse;
 import com.example.study.controller.user.response.auth.UserRegisterResponse;
 import com.example.study.domain.UserRepository;
+import com.example.study.service.user.UserDetailsImpl;
 import com.example.study.service.user.UserService;
-import io.swagger.annotations.Api;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
+@Slf4j
 @RestController
 @RequestMapping("/api/users")
 public class UserController {
 
     private final UserService userService;
 
-    public UserController(UserService userService) {
+    public UserController(UserService userService, UserRepository userRepository) {
         this.userService = userService;
     }
 
@@ -25,7 +30,6 @@ public class UserController {
     public ResponseEntity<?> registerUser(@RequestBody UserRegisterRequest request) {
         UserRegisterResponse userRegisterResponse = userService.createUser(request.toServiceDto());
 
-        /* todo 브랜치 생성 및 관리 */
         if (!userRegisterResponse.isSuccess()) {
             if (userRegisterResponse.getMessage().equals("username")) {
                 return ResponseEntity.status(HttpStatus.CONFLICT).body(
@@ -57,15 +61,36 @@ public class UserController {
                         .build());
     }
 
+    @GetMapping("/me")
+    public ResponseEntity<?> getMyInfo(@AuthenticationPrincipal UserDetailsImpl userDetails) {
+        log.info("유저 ID: {}, Role: {}", userDetails.getId(), userDetails.getAuthorities());
+        UserInfoResponse userInfoResponse = userService.getMyInfo(userDetails.getId());
+        return ResponseEntity.ok(
+                ApiResponse.builder()
+                        .status(HttpStatus.OK.value())
+                        .data(userInfoResponse)
+                        .build());
+    }
+
     @GetMapping("/{userId}")
-    public ResponseEntity<?> getUser(@PathVariable Long userId) {
+    public ResponseEntity<?> getUserInfo(@PathVariable Long userId, @AuthenticationPrincipal UserDetailsImpl userDetails) {
         /* todo get 기능 개발 */
         /* 200, 404 */
+
+        if (!userDetails.getId().equals(userId) && !userDetails.getAuthorities().equals("ADMIN") && !userDetails.getAuthorities().equals("SUPER_ADMIN")) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN)
+                    .body(ApiResponse.builder()
+                            .status(HttpStatus.FORBIDDEN.value())
+                            .message("권한이 없습니다.")
+                            .build());
+        }
+
+        UserInfoResponse userInfoResponse = userService.getUserInfo(userId);
 
         return ResponseEntity.ok(
                 ApiResponse.builder()
                         .status(HttpStatus.OK.value())
-                        .data(userId) // 여기에 유저 넣기
+                        .data(userInfoResponse)
                         .build());
     }
 
