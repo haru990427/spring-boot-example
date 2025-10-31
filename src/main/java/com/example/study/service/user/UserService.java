@@ -122,11 +122,12 @@ public class UserService {
                     .userInfo(null)
                     .message("something went wrong")
                     .build();
-        }
+}
     }
 
 //    public UserInfoResponse getMyInfo(Long userId) {
-//        User user =  this.userRepository.findById(userId).orElse(null);
+//        User user =  this.userRepository.findById(userId).orElseThrow(
+//                ()->new EntityNotFoundException("존재하지 않는 유저입니다."));
 //        return UserInfoResponse.builder()
 //                .userID(user.getId())
 //                .userName(user.getUsername())
@@ -139,7 +140,7 @@ public class UserService {
 //                .build();
 //    }
 
-    @Transactional(readOnly = true)
+@Transactional(readOnly = true)
     public UserInfoResponse getUserInfo(Long userId) {
         User user =  this.userRepository.findById(userId).orElseThrow(
                 ()->new EntityNotFoundException("존재하지 않는 유저입니다."));

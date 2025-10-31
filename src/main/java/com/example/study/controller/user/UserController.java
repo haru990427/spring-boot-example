@@ -63,6 +63,7 @@ public class UserController {
 
     @GetMapping("/me")
     public ResponseEntity<?> getMyInfo(@AuthenticationPrincipal UserDetailsImpl userDetails) {
+        log.debug("호출된 메서드: getMyInfo");
         log.info("유저 ID: {}, Role: {}", userDetails.getId(), userDetails.getAuthorities());
         UserInfoResponse userInfoResponse = userService.getUserInfo(userDetails.getId());
         return ResponseEntity.ok(
@@ -72,6 +73,30 @@ public class UserController {
                         .build());
     }
 
+
+    @PutMapping("/me")
+    public ResponseEntity<?> changeMyDetails(@AuthenticationPrincipal UserDetailsImpl userDetails) {
+        log.debug("호출된 메서드: changeMyDetails");
+        log.info("유저 ID: {}, Role: {}", userDetails.getId(), userDetails.getAuthorities());
+
+        /* todo put 기능 개발 */
+        /* 상황에 맞게 200(변경값 있음), 204(put을 요청했지만 변경값 없음), 404(없는 userId)  */
+
+        return ResponseEntity.ok("put");
+    }
+
+    @DeleteMapping("/me")
+    public ResponseEntity<?> deleteMe(@AuthenticationPrincipal UserDetailsImpl userDetails) {
+        log.debug("호출된 메서드: deleteMe");
+        log.info("유저 ID: {}, Role: {}", userDetails.getId(), userDetails.getAuthorities());
+
+        /* todo delete 기능 개발 */
+        /* 204(삭제 성공), 404(없는 userId) */
+        return ResponseEntity.noContent().build();
+    }
+
+    /* usserId 파라미터로 접근해서 유저 정보 조회, 수정, 삭제하는건 Admin Role 이상부터 -> AdminService */
+    /* UserService에 있는 메서드는 권한 검사 !!필수!! */
     @GetMapping("/{userId}")
     public ResponseEntity<?> getUserInfo(@PathVariable Long userId, @AuthenticationPrincipal UserDetailsImpl userDetails) {
         if (!userDetails.getId().equals(userId) && !userDetails.getAuthorities().equals("ADMIN") && !userDetails.getAuthorities().equals("SUPER_ADMIN")) {
@@ -92,7 +117,15 @@ public class UserController {
     }
 
     @PutMapping("/{userId}")
-    public ResponseEntity<?> changeUserDetails(@PathVariable Long userId) {
+    public ResponseEntity<?> changeUserDetails(@PathVariable Long userId, @AuthenticationPrincipal UserDetailsImpl userDetails) {
+        if (!userDetails.getId().equals(userId) && !userDetails.getAuthorities().equals("ADMIN") && !userDetails.getAuthorities().equals("SUPER_ADMIN")) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN)
+                    .body(ApiResponse.builder()
+                            .status(HttpStatus.FORBIDDEN.value())
+                            .message("권한이 없습니다.")
+                            .build());
+        }
+
         /* todo put 기능 개발 */
         /* 상황에 맞게 200(변경값 있음), 204(put을 요청했지만 변경값 없음), 404(없는 userId)  */
 
@@ -100,7 +133,15 @@ public class UserController {
     }
 
     @DeleteMapping("/{userId}")
-    public ResponseEntity<?> deleteUser(@PathVariable Long userId) {
+    public ResponseEntity<?> deleteUser(@PathVariable Long userId, @AuthenticationPrincipal UserDetailsImpl userDetails) {
+        if (!userDetails.getId().equals(userId) && !userDetails.getAuthorities().equals("ADMIN") && !userDetails.getAuthorities().equals("SUPER_ADMIN")) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN)
+                    .body(ApiResponse.builder()
+                            .status(HttpStatus.FORBIDDEN.value())
+                            .message("권한이 없습니다.")
+                            .build());
+        }
+
         /* todo delete 기능 개발 */
         /* 204(삭제 성공), 404(없는 userId) */
         return ResponseEntity.noContent().build();
