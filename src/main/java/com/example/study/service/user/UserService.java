@@ -7,6 +7,7 @@ import com.example.study.domain.UserRepository;
 import com.example.study.domain.enums.EmailStatus;
 import com.example.study.domain.enums.Role;
 import com.example.study.service.user.dto.UserRegisterDTO;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -124,8 +125,24 @@ public class UserService {
         }
     }
 
-    public UserInfoResponse getMyInfo(Long userId) {
-        User user =  this.userRepository.findById(userId).orElse(null);
+//    public UserInfoResponse getMyInfo(Long userId) {
+//        User user =  this.userRepository.findById(userId).orElse(null);
+//        return UserInfoResponse.builder()
+//                .userID(user.getId())
+//                .userName(user.getUsername())
+//                .nickName(user.getNickname())
+//                .role(user.getRole())
+//                .email(user.getEmail())
+//                .emailStatus(user.getEmailStatus())
+//                .createdAt(user.getCreatedAt())
+//                .updatedAt(user.getUpdatedAt())
+//                .build();
+//    }
+
+    @Transactional(readOnly = true)
+    public UserInfoResponse getUserInfo(Long userId) {
+        User user =  this.userRepository.findById(userId).orElseThrow(
+                ()->new EntityNotFoundException("존재하지 않는 유저입니다."));
         return UserInfoResponse.builder()
                 .userID(user.getId())
                 .userName(user.getUsername())
@@ -136,9 +153,5 @@ public class UserService {
                 .createdAt(user.getCreatedAt())
                 .updatedAt(user.getUpdatedAt())
                 .build();
-    }
-
-    public UserInfoResponse getUserInfo(Long userId) {
-        return null;
     }
 }

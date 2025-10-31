@@ -21,7 +21,7 @@ public class UserController {
 
     private final UserService userService;
 
-    public UserController(UserService userService, UserRepository userRepository) {
+    public UserController(UserService userService) {
         this.userService = userService;
     }
 
@@ -64,7 +64,7 @@ public class UserController {
     @GetMapping("/me")
     public ResponseEntity<?> getMyInfo(@AuthenticationPrincipal UserDetailsImpl userDetails) {
         log.info("유저 ID: {}, Role: {}", userDetails.getId(), userDetails.getAuthorities());
-        UserInfoResponse userInfoResponse = userService.getMyInfo(userDetails.getId());
+        UserInfoResponse userInfoResponse = userService.getUserInfo(userDetails.getId());
         return ResponseEntity.ok(
                 ApiResponse.builder()
                         .status(HttpStatus.OK.value())
@@ -74,9 +74,6 @@ public class UserController {
 
     @GetMapping("/{userId}")
     public ResponseEntity<?> getUserInfo(@PathVariable Long userId, @AuthenticationPrincipal UserDetailsImpl userDetails) {
-        /* todo get 기능 개발 */
-        /* 200, 404 */
-
         if (!userDetails.getId().equals(userId) && !userDetails.getAuthorities().equals("ADMIN") && !userDetails.getAuthorities().equals("SUPER_ADMIN")) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN)
                     .body(ApiResponse.builder()
@@ -108,5 +105,4 @@ public class UserController {
         /* 204(삭제 성공), 404(없는 userId) */
         return ResponseEntity.noContent().build();
     }
-
 }
